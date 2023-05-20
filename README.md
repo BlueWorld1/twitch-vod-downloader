@@ -42,4 +42,4 @@ The programme will ask you a twitch VOD URL
 
 If the URL is valid and the playlist can be retrieved, you can select the VOD quality
 
-After selecting the quality, the download will start and the file will be saved in .\VOD
+After selecting the quality, the download will start and the file will be saved in `.\VOD\VodId.mp4`
