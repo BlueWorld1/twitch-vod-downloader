@@ -31,6 +31,8 @@ At the end, you should have theses files in your folder
 - package-lock.json
 - youtube-dl.exe
 
+If it's not the case, make sure youtube-dl and ffmpeg are installed and available in your path, or adapt `const command = ...` in the function `saveVodToDisk`
+
 ## How to use
 Simply run the main.js file using node.js
 
