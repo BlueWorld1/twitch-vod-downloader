@@ -22,6 +22,7 @@ So it's basically just using 3 projects to create this script:
   - If you want to install it globally in your system, it should also works fine.
   - I did not try linux and osx, but youtube-dl binary is also available for theses systems.
   - What is important is that `const command = ...` in the function `saveVodToDisk` reference the right binary in your local installation.
+
 -  make sure you have ffmpeg installed
   - You can find ffmpeg binary here: https://ffmpeg.org/download.html
   - ffmpeg is a dependency of youtube-dl. If the command `youtube-dl` run without error, that means your ffmpeg installation is working fine.
