@@ -46,3 +46,9 @@ After selecting the quality, the download will start and the file will be saved 
 This is a side project just for myself and I share it to anyone that want to use it, but there is no support or update garanteed.
 You can take the code and do whatever you want with it.
 Original credit goes to https://github.com/besuper/TwitchNoSub
+I have 0 knowledge on video stream/encoding/decoding... so probably there is many things that can be improved
+
+
+## Improvment
+- Create a bundle file instead of using npm install
+- Add some feature to compress the downloaded video file
