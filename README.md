@@ -1,18 +1,14 @@
 # twitch-vod-downloader
 This script is based on https://github.com/besuper/TwitchNoSub.
-
-  The TwitchNoSub has the logic to convert the twitch playlist into a fake playlist fetching the VOD from cloudfront.net (check `fakePlaylist` in function `getM3U8`)
-  
-Instead of spoofing the fetch function of our browser when we try to access a twitch VOD (this works great with the twitch web player), I've defined a function `getM3U8` and then I did re-use this fake playlist to download it locally using youtube-dl and ffmpeg.
-
-  The fetch spooding is originally done here: https://github.com/besuper/TwitchNoSub/blob/master/src/patch_amazonworker.js#L40
-  
+-  The TwitchNoSub has the logic to convert the twitch playlist into a fake playlist fetching the VOD from cloudfront.net (check `fakePlaylist` in function `getM3U8`)
+-  Instead of spoofing the fetch function of our browser when we try to access a twitch VOD (this works great with the twitch web player), I've defined a function `getM3U8` and then I did re-use this fake playlist to download it locally using youtube-dl and ffmpeg.
+The fetch spooding is originally done here: https://github.com/besuper/TwitchNoSub/blob/master/src/patch_amazonworker.js#L40
 
 So it's basically just using 3 projects to create this script: 
 
-- TwitchNoSub(https://github.com/besuper/TwitchNoSub)
-- Youtube-dl(https://github.com/ytdl-org/youtube-dl)
-- ffmpeg(https://github.com/FFmpeg/FFmpeg)
+- [TwitchNoSub](https://github.com/besuper/TwitchNoSub)
+- [Youtube-dl](https://github.com/ytdl-org/youtube-dl)
+- [ffmpeg](https://github.com/FFmpeg/FFmpeg)
 
 ## Installation
 - Clone this repository
@@ -43,3 +39,8 @@ The programme will ask you a twitch VOD URL
 If the URL is valid and the playlist can be retrieved, you can select the VOD quality
 
 After selecting the quality, the download will start and the file will be saved in `.\VOD\VodId.mp4`
+
+## Additionnal information
+This is a side project just for myself and I share it to anyone that want to use it, but there is no support or update garanteed.
+You can take the code and do whatever you want with it.
+Original credit goes to https://github.com/besuper/TwitchNoSub
