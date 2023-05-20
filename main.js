@@ -139,9 +139,8 @@ const saveVodToDisk = (vodId, videoUrl) => {
     console.log('Download completed.');
 };
 
-const getVodUrls = async (videoUrl) => {
+const getVodUrls = async (vodId) => {
     try {
-        const vodId = extractTwitchVodIdFromUrl(videoUrl);
         const m3u8Content = await getM3U8(vodId);
         const videoUrls = extractVideoUrlsFromM3U8(m3u8Content);
 
@@ -157,9 +156,10 @@ const getVodUrls = async (videoUrl) => {
 
 const runTwitchVodDownloader = async () => {
     const twitchUrl = readlineSync.question("Enter the Twitch VOD URL (https://www.twitch.tv/videos/ID): ");
-    const vodUrls = await getVodUrls(twitchUrl);
-    const selectedVideoResolution = selectVideoResolution(vodUrls);
-    saveVodToDisk(vodId, selectedVideoResolution, path);
+    const vodId = extractTwitchVodIdFromUrl(twitchUrl);
+    const vodUrls = await getVodUrls(vodId);
+    const selectedVideoResolutionUrl = selectVideoResolution(vodUrls);
+    saveVodToDisk(vodId, selectedVideoResolutionUrl);
 };
 
 runTwitchVodDownloader();
