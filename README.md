@@ -45,7 +45,9 @@ After selecting the quality, the download will start and the file will be saved 
 ## Additionnal information
 This is a side project just for myself and I share it to anyone that want to use it, but there is no support or update garanteed.
 You can take the code and do whatever you want with it.
-Original credit goes to https://github.com/besuper/TwitchNoSub
+
+Original credit goes to https://github.com/besuper/TwitchNoSub, https://github.com/ytdl-org/youtube-dl and https://github.com/FFmpeg/FFmpe
+
 I have 0 knowledge on video stream/encoding/decoding... so probably there is many things that can be improved
 
 I have created this script to share the file over a media server and being able to read this file from anywere and not only on browsers.
