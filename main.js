@@ -135,7 +135,7 @@ const selectVideoFormat = () => {
 };
 
 const saveVodToDisk = (vodId, metadata, format) => {
-    const filePath = `${metadata.user} ${vodId}.${format}`;
+    const filePath = `${metadata.user}_${vodId}.${format}`;
     const command = `youtube-dl --recode-video ${format} -o .\\VOD\\${filePath} ${metadata.url}`;
 
     const result = spawnSync(command, { stdio: 'inherit', shell: true });
