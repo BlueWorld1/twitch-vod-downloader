@@ -46,7 +46,7 @@ After selecting the quality, the download will start and the file will be saved 
 This is a side project just for myself and I share it to anyone that want to use it, but there is no support or update garanteed.
 You can take the code and do whatever you want with it.
 
-Original credit goes to https://github.com/besuper/TwitchNoSub, https://github.com/ytdl-org/youtube-dl and https://github.com/FFmpeg/FFmpe
+Original credit goes to https://github.com/besuper/TwitchNoSub, https://github.com/ytdl-org/youtube-dl and https://github.com/FFmpeg/FFmpeg
 
 I have 0 knowledge on video stream/encoding/decoding... so probably there is many things that can be improved
 
