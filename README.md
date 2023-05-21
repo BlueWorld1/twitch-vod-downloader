@@ -1,7 +1,7 @@
 # twitch-vod-downloader
 This script is based on https://github.com/besuper/TwitchNoSub.
 -  The TwitchNoSub has the logic to convert the twitch playlist into a fake playlist fetching the VOD from cloudfront.net (check `fakePlaylist` in function `getM3U8`)
--  Instead of spoofing the fetch function of our browser when we try to access a twitch VOD (this works great with the twitch web player), I've defined a function `getM3U8` and then I did re-use this fake playlist to download it locally using youtube-dl and ffmpeg.
+-  Instead of spoofing the fetch function of our browser when we try to access a twitch VOD (this works great with the twitch web player), I've defined a function `fetchVodMetadataById` and then I did re-use the twitch API data to download it locally using youtube-dl and ffmpeg.
 The fetch spoofing is originally done here: https://github.com/besuper/TwitchNoSub/blob/master/src/patch_amazonworker.js#L40
 
 So it's basically just using 3 projects to create this script: 
