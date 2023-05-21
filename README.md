@@ -25,11 +25,11 @@ So it's basically just using 3 projects to create this script:
 
 At the end, you should have theses files in your folder
 - node_module
-- ffmpeg.exe
+- ffmpeg.exe (optionnal)
 - main.js
 - package.json
 - package-lock.json
-- youtube-dl.exe
+- youtube-dl.exe  (optionnal)
 
 If it's not the case, make sure youtube-dl and ffmpeg are installed and available in your $PATH.
 
