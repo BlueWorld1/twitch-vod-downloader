@@ -51,3 +51,5 @@ Original credit goes to https://github.com/besuper/TwitchNoSub, https://github.c
 I have 0 knowledge on video stream/encoding/decoding... so probably there is many things that can be improved
 
 I have created this script to share the file over a media server and being able to read this file from anywere and not only on browsers.
+
+Another project is work in progress here: https://github.com/BlueWorld1/twitch-vod-downloader-electron. The goal is to have a bundled application. The app is currently working and can download VOD but it's few hours of work only.
