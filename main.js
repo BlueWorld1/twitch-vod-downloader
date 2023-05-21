@@ -80,6 +80,7 @@ const fetchVodMetadataById = async (vodId) => {
                 url,
                 quality,
                 fps,
+                user: channelData.login
             });
         }
     }
@@ -99,16 +100,43 @@ const selectVideoResolution = (vodMetadata) => {
     vodMetadata.forEach((metadata, index) => {
         console.log(`${index + 1}. ${metadata.quality} @ ${metadata.fps}`);
     });
-    const selectedIndex = readlineSync.questionInt("Enter the number of the URL to use: ", {
+    const selectedIndex = readlineSync.questionInt("Enter the number of the quality you want to use: ", {
         min: 1,
         max: vodMetadata.length
     });
     return vodMetadata[selectedIndex - 1];
 };
+const selectVideoFormat = () => {
+    const formats = [
+        '3g2',
+        '3gp',
+        'avi',
+        'flv',
+        'mkv',
+        'mov',
+        'mp4',
+        'mpeg',
+        'mpg',
+        'ogg',
+        'ts',
+        'vob',
+        'webm',
+        'wmv'
+    ];
+    console.log("Available Formats:");
+    formats.forEach((format, index) => {
+        console.log(`${index + 1}. ${format}`);
+    });
+    const selectedIndex = readlineSync.questionInt("Enter the number of the format you want to use: ", {
+        min: 1,
+        max: formats.length
+    });
+    return formats[selectedIndex - 1];
+};
 
-const saveVodToDisk = (vodId, videoUrl) => {
-    const filePath = vodId + '.mp4';
-    const command = `.\\youtube-dl.exe -o .\\VOD\\${filePath} ${videoUrl}`;
+const saveVodToDisk = (vodId, metadata, format) => {
+    const filePath = `${metadata.user} ${vodId}.${format}`;
+    const command = `youtube-dl --recode-video ${format} -o .\\VOD\\${filePath} ${metadata.url}`;
 
     const result = spawnSync(command, { stdio: 'inherit', shell: true });
 
@@ -122,9 +150,12 @@ const saveVodToDisk = (vodId, videoUrl) => {
 const runTwitchVodDownloader = async () => {
     const twitchUrl = readlineSync.question("Enter the Twitch VOD URL (https://www.twitch.tv/videos/ID): ");
     const vodId = extractTwitchVodIdFromUrl(twitchUrl);
+
     const vodMetadata = await fetchVodMetadataById(vodId);
     const selectedMetadata = selectVideoResolution(vodMetadata);
-    saveVodToDisk(vodId, selectedMetadata.url);
+    const selectedFormat = selectVideoFormat()
+
+    saveVodToDisk(vodId, selectedMetadata, selectedFormat);
     return twitchUrl;
 };
 
