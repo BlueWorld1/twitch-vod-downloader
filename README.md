@@ -38,9 +38,9 @@ Simply run the main.js file using node.js
 
 The programme will ask you a twitch VOD URL
 
-If the URL is valid and the playlist can be retrieved, you can select the VOD quality
+If the URL is valid and the playlist can be retrieved, you can select the VOD quality and format
 
-After selecting the quality, the download will start and the file will be saved in `.\VOD\VodId.mp4`
+After selecting the quality, the download will start and the file will be saved in `.\VOD\userLogin_VodId.mp4`
 
 ## Additionnal information
 This is a side project just for myself and I share it to anyone that want to use it, but there is no support or update garanteed.
