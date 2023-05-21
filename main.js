@@ -15,7 +15,7 @@ const fetchTwitchDataGQL = async (vodID) => {
     const resp = await fetch("https://gql.twitch.tv/gql", {
         method: 'POST',
         body: JSON.stringify({
-            query: `query { video(id: "${vodID}") { broadcastType, createdAt, seekPreviewsURL, owner { login } }}`,
+            query: `query { video(id: "${vodID}") { broadcastType, createdAt, seekPreviewsURL, owner { login }, title }}`,
         }),
         headers: {
             'Client-Id': 'kimne78kx3ncx6brgo4mv6wki5h1ko',
@@ -40,14 +40,13 @@ const fetchVodMetadataById = async (vodId) => {
     }
 
     const vodData = data.data.video;
-    const channelData = vodData.owner;
+    const owner = vodData.owner.login;
+    const title = vodData.title;
 
     const currentURL = new URL(vodData.seekPreviewsURL);
     const domain = currentURL.host;
     const paths = currentURL.pathname.split("/");
     const vodSpecialID = paths[paths.findIndex((element) => element.includes("storyboards")) - 1];
-
-    const videoUrls = [];
 
     const now = new Date("2023-02-10");
     const created = new Date(vodData.createdAt);
@@ -55,32 +54,35 @@ const fetchVodMetadataById = async (vodId) => {
     const daysDifference = timeDifference / (1000 * 3600 * 24);
     const broadcastType = vodData.broadcastType.toLowerCase();
 
-    for (const [resKey, resValue] of Object.entries(resolutions)) {
-        let url;
+    const videoUrls = Object.entries(resolutions).map(async ([resKey, resValue]) => {
+        const url = broadcastType === "highlight"
+            ? `https://${domain}/${vodSpecialID}/${resKey}/highlight-${vodId}.m3u8`
+            : (broadcastType === "upload" && daysDifference > 7)
+                ? `https://${domain}/${owner}/${vodId}/${vodSpecialID}/${resKey}/index-dvr.m3u8`
+                : `https://${domain}/${vodSpecialID}/${resKey}/index-dvr.m3u8`;
 
-        if (broadcastType === "highlight") {
-            url = `https://${domain}/${vodSpecialID}/${resKey}/highlight-${vodId}.m3u8`;
-        } else if (broadcastType === "upload" && daysDifference > 7) {
-            url = `https://${domain}/${channelData.login}/${vodId}/${vodSpecialID}/${resKey}/index-dvr.m3u8`;
-        } else {
-            url = `https://${domain}/${vodSpecialID}/${resKey}/index-dvr.m3u8`;
-        }
+        const isValid = await isValidQuality(url);
 
-        if (url && (await isValidQuality(url))) {
+        if (isValid) {
             const quality = resKey === "chunked" ? resValue.res.split("x")[1] + "p" : resKey;
             const fps = resValue.fps;
 
-            videoUrls.push({
+            return {
                 url,
                 quality,
-                fps,
-                user: channelData.login
-            });
+                fps
+            };
         }
-    }
+    });
 
-    return videoUrls;
+    const validVideoUrls = await Promise.all(videoUrls);
+    return {
+        owner,
+        title,
+        videos: validVideoUrls.filter(Boolean)
+    };
 };
+
 
 const extractTwitchVodIdFromUrl = (url) => {
     if (!url.startsWith("https://www.twitch.tv/videos/")) {
@@ -89,16 +91,16 @@ const extractTwitchVodIdFromUrl = (url) => {
     return url.split("https://www.twitch.tv/videos/")[1].split("?")[0];
 }
 
-const selectVideoResolution = (vodMetadata) => {
+const selectVideoResolution = (videos) => {
     console.log("Available Qualities:");
-    vodMetadata.forEach((metadata, index) => {
+    videos.forEach((metadata, index) => {
         console.log(`${index + 1}. ${metadata.quality} @ ${metadata.fps}`);
     });
     const selectedIndex = readlineSync.questionInt("Enter the number of the quality you want to use: ", {
         min: 1,
-        max: vodMetadata.length
+        max: videos.length
     });
-    return vodMetadata[selectedIndex - 1];
+    return videos[selectedIndex - 1];
 };
 const selectVideoFormat = () => {
     const formats = [
@@ -121,7 +123,7 @@ const selectVideoFormat = () => {
 };
 
 const saveVodToDisk = (vodId, metadata, format) => {
-    const filePath = `${metadata.user}_${vodId}.${format}`;
+    const filePath = `${metadata.owner}_${metadata.title}_${vodId}.${format}`;
     const command = `youtube-dl --recode-video ${format} -o .\\VOD\\${filePath} ${metadata.url}`;
 
     const result = spawnSync(command, { stdio: 'inherit', shell: true });
@@ -138,7 +140,10 @@ const runTwitchVodDownloader = async () => {
     const vodId = extractTwitchVodIdFromUrl(twitchUrl);
 
     const vodMetadata = await fetchVodMetadataById(vodId);
-    const selectedMetadata = selectVideoResolution(vodMetadata);
+    console.log(`You want to download: 
+    ${vodMetadata.title} from ${vodMetadata.owner}
+    Please select the quality and the format to start the download.`)
+    const selectedMetadata = selectVideoResolution(vodMetadata.videos);
     const selectedFormat = selectVideoFormat()
 
     saveVodToDisk(vodId, selectedMetadata, selectedFormat);
