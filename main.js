@@ -108,20 +108,12 @@ const selectVideoResolution = (vodMetadata) => {
 };
 const selectVideoFormat = () => {
     const formats = [
-        '3g2',
-        '3gp',
-        'avi',
-        'flv',
-        'mkv',
-        'mov',
         'mp4',
-        'mpeg',
-        'mpg',
-        'ogg',
-        'ts',
-        'vob',
+        'mkv',
+        'avi',
         'webm',
-        'wmv'
+        'flv',
+        'ogg'
     ];
     console.log("Available Formats:");
     formats.forEach((format, index) => {
