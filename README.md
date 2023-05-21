@@ -48,7 +48,4 @@ You can take the code and do whatever you want with it.
 Original credit goes to https://github.com/besuper/TwitchNoSub
 I have 0 knowledge on video stream/encoding/decoding... so probably there is many things that can be improved
 
-
-## Improvment
-- Create a bundle file instead of using npm install
-- Add some feature to compress the downloaded video file
+I have created this script to share the file over a media server and being able to read this file from anywere and not only on browsers.
