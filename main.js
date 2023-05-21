@@ -3,12 +3,12 @@ import readlineSync from 'readline-sync';
 import fetch from 'node-fetch'
 
 const resolutions = {
-    "160p30": {res: "284x160", fps: 30},
-    "360p30": {res: "640x360", fps: 30},
-    "480p30": {res: "854x480", fps: 30},
-    "720p60": {res: "1280x720", fps: 60},
-    "1080p60": {res: "1920x1080", fps: 60},
     chunked: {res: "1920x1080", fps: 60},
+    "1080p60": {res: "1920x1080", fps: 60},
+    "720p60": {res: "1280x720", fps: 60},
+    "480p30": {res: "854x480", fps: 30},
+    "360p30": {res: "640x360", fps: 30},
+    "160p30": {res: "284x160", fps: 30},
 };
 
 const fetchTwitchDataGQL = async (vodID) => {
@@ -42,12 +42,6 @@ const fetchVodMetadataById = async (vodId) => {
     const vodData = data.data.video;
     const channelData = vodData.owner;
 
-    const sortedResolutions = Object.keys(resolutions).reverse();
-    const orderedResolutions = sortedResolutions.reduce((obj, key) => {
-        obj[key] = resolutions[key];
-        return obj;
-    }, {});
-
     const currentURL = new URL(vodData.seekPreviewsURL);
     const domain = currentURL.host;
     const paths = currentURL.pathname.split("/");
@@ -61,7 +55,7 @@ const fetchVodMetadataById = async (vodId) => {
     const daysDifference = timeDifference / (1000 * 3600 * 24);
     const broadcastType = vodData.broadcastType.toLowerCase();
 
-    for (const [resKey, resValue] of Object.entries(orderedResolutions)) {
+    for (const [resKey, resValue] of Object.entries(resolutions)) {
         let url;
 
         if (broadcastType === "highlight") {
