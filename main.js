@@ -122,9 +122,12 @@ const selectVideoFormat = () => {
     return formats[selectedIndex - 1];
 };
 
-const saveVodToDisk = (vodId, metadata, format) => {
-    const filePath = `${metadata.owner}_${metadata.title}_${vodId}.${format}`;
-    const command = `youtube-dl --recode-video ${format} -o .\\VOD\\${filePath} ${metadata.url}`;
+const saveVodToDisk = (vodId, metadata, vod, format) => {
+    const filePath = `${metadata.owner.replaceAll(
+        " ",
+        "_"
+    )}_${metadata.title.replaceAll(" ", "_")}.mp4`;
+    const command = `youtube-dl --recode-video ${format} -o .\\VOD\\${filePath} ${vod.url}`;
 
     const result = spawnSync(command, { stdio: 'inherit', shell: true });
 
@@ -143,10 +146,10 @@ const runTwitchVodDownloader = async () => {
     console.log(`You want to download: 
     ${vodMetadata.title} from ${vodMetadata.owner}
     Please select the quality and the format to start the download.`)
-    const selectedMetadata = selectVideoResolution(vodMetadata.videos);
+    const selectedVod = selectVideoResolution(vodMetadata.videos);
     const selectedFormat = selectVideoFormat()
 
-    saveVodToDisk(vodId, selectedMetadata, selectedFormat);
+    saveVodToDisk(vodId, vodMetadata, selectedVod, selectedFormat);
     return twitchUrl;
 };
 
